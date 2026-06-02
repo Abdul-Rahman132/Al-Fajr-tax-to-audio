@@ -1269,7 +1269,6 @@ function showMain()
                 { Button, id = "apiBtn", text = "API", layout_width = "0dp", layout_weight = "1", textColor = "#FFFFFF", padding = "12dp", typeface = Typeface.DEFAULT_BOLD, layout_marginRight = "4dp" },
                 { Button, id = "hideBtn", text = "HIDE", layout_width = "0dp", layout_weight = "1", textColor = "#FFFFFF", padding = "12dp", typeface = Typeface.DEFAULT_BOLD, layout_marginRight = "4dp" },
                 { Button, id = "aboutBtn", text = "ABOUT", layout_width = "0dp", layout_weight = "1", textColor = "#FFFFFF", padding = "12dp", typeface = Typeface.DEFAULT_BOLD, layout_marginRight = "4dp" },
-                { Button, id = "settingsBtn", text = "SETTINGS", layout_width = "0dp", layout_weight = "1", textColor = "#FFFFFF", padding = "12dp", typeface = Typeface.DEFAULT_BOLD, layout_marginRight = "4dp" },
                 { Button, id = "exitBtn", text = "EXIT", layout_width = "0dp", layout_weight = "1", textColor = "#FFFFFF", padding = "12dp", typeface = Typeface.DEFAULT_BOLD }
             }
         }
@@ -1320,7 +1319,6 @@ function showMain()
         views.apiBtn.setBackground(createGradientDrawable("#8E44AD", "#9B59B6", 20))
         views.hideBtn.setBackground(createGradientDrawable("#2980B9", "#3498DB", 20))
         views.aboutBtn.setBackground(createGradientDrawable("#F39C12", "#E67E22", 20))
-        views.settingsBtn.setBackground(createGradientDrawable("#5D6D7E", "#34495E", 20))  -- Settings button color
         views.exitBtn.setBackground(createGradientDrawable("#C0392B", "#E74C3C", 20))
     end)
     
@@ -1523,13 +1521,6 @@ function showMain()
     views.aboutBtn.onClick = function()
         vibrate(30)
         showAboutDialog()
-    end
-    
-    -- SETTINGS button - does nothing (placeholder)
-    views.settingsBtn.onClick = function()
-        vibrate(30)
-        -- Intentionally left empty as requested by user
-        -- No action performed
     end
     
     views.apiBtn.onClick = function() vibrate(35); dlg.dismiss(); showApiSettings(false) end
