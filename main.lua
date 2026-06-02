@@ -1,4 +1,4 @@
-Require "import"
+require "import"
 import "com.androlua.Http"
 import "cjson"
 import "com.androlua.LuaDialog"
@@ -82,7 +82,7 @@ local retryCount = 0
 local MAX_RETRY = 3
 local MAX_CHARS = 8000
 
-local PREFS_NAME = "Gemini_AudioCraft"
+local PREFS_NAME = "Gemini_AudioCraft_Prefs"
 local prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
 -- Helper functions
@@ -389,8 +389,7 @@ function generatePodcast(userText, apikey, hostVoice, guestVoice, model, generat
                 if candidate and candidate.content and candidate.content.parts and #candidate.content.parts > 0 then
                     local raw = candidate.content.parts[1].text
                     if raw then
-                        local cleaned = raw:gsub("```json\n?", ""):gsub("\n
-```", ""):gsub("```", "")
+                        local cleaned = raw:gsub("```json\n?", ""):gsub("\n```", ""):gsub("```", "")
                         local startIdx, endIdx = cleaned:find("%[.*%]")
                         if startIdx then cleaned = cleaned:sub(startIdx, endIdx) end
                         local okJson, dialogue = pcall(cjson.decode, cleaned)
@@ -495,7 +494,7 @@ function generateSingleAudio(text, voice, apikey, model, generateBtn, playBtn, r
     end
     local finalText = emotionPrefix .. trimmedText
     
-    local apiUrl = "[https://generativelanguage.googleapis.com/v1beta/models/](https://generativelanguage.googleapis.com/v1beta/models/)" .. model .. ":generateContent?key=" .. apikey
+    local apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" .. model .. ":generateContent?key=" .. apikey
     local requestBody = {
         contents = { { parts = { { text = finalText } } } },
         generationConfig = {
@@ -588,7 +587,7 @@ function generateLyricsFromTheme(theme, userLyrics, apikey, callback)
     local prompt = "You are a songwriter. Generate meaningful song lyrics (max 200 words) based on: " .. theme
     if userLyrics and userLyrics ~= "" then prompt = prompt .. "\nUser lyrics (improve): " .. userLyrics end
     prompt = prompt .. "\nOutput only raw lyrics, no extra text."
-    local url = "[https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=)" .. apikey
+    local url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" .. apikey
     local body = { contents = { { parts = { { text = prompt } } } }, generationConfig = { temperature = 0.8 } }
     local headers = HashMap()
     headers.put("Content-Type", "application/json")
@@ -616,7 +615,7 @@ end
 function generateSingingScript(lyrics, apikey, callback)
     local systemPrompt = [[
 Split the lyrics into a singing duet between male and female. Output JSON array of objects with keys: "speaker" ("male"/"female"), "text" (short phrase max 100 chars), "voice" (Puck/Fenrir/Charon/Zephyr for male, Kore/Aoede/Callirrhoe/Leda for female). No markdown. Lyrics: ]] .. lyrics
-    local url = "[https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=)" .. apikey
+    local url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" .. apikey
     local body = { contents = { { parts = { { text = systemPrompt } } } }, generationConfig = { temperature = 0.7 } }
     local headers = HashMap()
     headers.put("Content-Type", "application/json")
@@ -629,8 +628,7 @@ Split the lyrics into a singing duet between male and female. Output JSON array 
                 if candidate and candidate.content and candidate.content.parts and #candidate.content.parts > 0 then
                     local raw = candidate.content.parts[1].text
                     if raw then
-                        local cleaned = raw:gsub("```json\n?", ""):gsub("\n
-```", ""):gsub("```", "")
+                        local cleaned = raw:gsub("```json\n?", ""):gsub("\n```", ""):gsub("```", "")
                         local s, e = cleaned:find("%[.*%]")
                         if s then cleaned = cleaned:sub(s, e) end
                         local okj, dialogue = pcall(cjson.decode, cleaned)
@@ -1018,7 +1016,6 @@ end
 
 -- ========== PROFESSIONAL ABOUT DIALOG ==========
 function showAboutDialog()
-    -- Detailed instructions text (scrollable)
     local instructionsText = [[
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ■ Text to Audio Mode
@@ -1096,15 +1093,11 @@ function showAboutDialog()
     local views = {}
     local layout = {
         LinearLayout, orientation = "vertical", layout_width = "fill", layout_height = "wrap", id = "aboutCard",
-        -- Developer name at top
         { TextView, id = "devName", text = "Developer: Abdul Rehman", textSize = 18, textColor = "#E94560", gravity = "center", paddingTop = "16dp", paddingBottom = "8dp", typeface = Typeface.DEFAULT_BOLD },
-        -- How to Use heading
         { TextView, id = "howToHeading", text = "HOW TO USE", textSize = 16, textColor = "#FFFFFF", gravity = "center", paddingBottom = "12dp", typeface = Typeface.DEFAULT_BOLD },
-        -- Scrollable instructions
         { ScrollView, layout_width = "fill", layout_height = "0dp", layout_weight = "1",
             { TextView, id = "instructionsText", text = instructionsText, textSize = 12, textColor = "#CCCCCC", padding = "16dp", typeface = Typeface.MONOSPACE }
         },
-        -- Buttons at bottom
         {
             LinearLayout, orientation = "horizontal", layout_width = "fill", layout_height = "wrap", padding = "16dp",
             { Button, id = "feedbackBtn", text = "SEND FEEDBACK", layout_width = "0dp", layout_weight = "1", textColor = "#FFFFFF", padding = "14dp", layout_marginRight = "8dp", textSize = 14, typeface = Typeface.DEFAULT_BOLD },
@@ -1133,7 +1126,7 @@ function showAboutDialog()
         dlg.dismiss()
         local phone = "+923124255300"
         local message = "Hello Abdul Rehman! I'm using Gemini AudioCraft. Here is my feedback:"
-        local url = "https://wa.me/" .. phone:gsub("+", "") .. "?text = " .. Uri.encode(message)
+        local url = "https://wa.me/" .. phone:gsub("+", "") .. "?text=" .. Uri.encode(message)
         local intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
         closeAndCleanup()
