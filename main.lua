@@ -82,7 +82,7 @@ local retryCount = 0
 local MAX_RETRY = 3
 local MAX_CHARS = 8000
 
-local PREFS_NAME = "Gemini_TTS_Pro"
+local PREFS_NAME = "Gemini_AudioCraft_Prefs"
 local prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
 -- Helper functions
@@ -961,7 +961,7 @@ function showApiSettings(isFirstRun)
     local views = {}
     local layout = {
         LinearLayout, orientation = "vertical", padding = "24dp", layout_width = "fill", layout_height = "wrap", id = "apiDialogCard",
-        { TextView, id = "welcomeText", text = isFirstRun and "Welcome to Gemini TTS Pro!\n\nPlease enter your Google Gemini API key to start." or "API CONFIGURATION", textSize = isFirstRun and 18 or 16, textColor = "#FFFFFF", gravity = "center", paddingBottom = "20dp", typeface = Typeface.DEFAULT_BOLD },
+        { TextView, id = "welcomeText", text = isFirstRun and "Welcome to Gemini AudioCraft!\n\nPlease enter your Google Gemini API key to start." or "API CONFIGURATION", textSize = isFirstRun and 18 or 16, textColor = "#FFFFFF", gravity = "center", paddingBottom = "20dp", typeface = Typeface.DEFAULT_BOLD },
         { EditText, id = "apiInput", hint = "Enter your Google Gemini API key", layout_width = "fill", layout_height = "wrap", backgroundColor = "#00000000", padding = "12dp", textColor = "#FFFFFF", hintTextColor = "#80FFFFFF" },
         {
             LinearLayout, orientation = "horizontal", layout_width = "fill", layout_height = "wrap", layout_marginTop = "20dp",
@@ -1014,9 +1014,8 @@ function showApiSettings(isFirstRun)
     dlg.show()
 end
 
--- ========== PROFESSIONAL ABOUT DIALOG (Redesigned as per instructions) ==========
+-- ========== PROFESSIONAL ABOUT DIALOG ==========
 function showAboutDialog()
-    -- Detailed instructions text (scrollable)
     local instructionsText = [[
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ■ Text to Audio Mode
@@ -1094,15 +1093,11 @@ function showAboutDialog()
     local views = {}
     local layout = {
         LinearLayout, orientation = "vertical", layout_width = "fill", layout_height = "wrap", id = "aboutCard",
-        -- Developer name at top
         { TextView, id = "devName", text = "Developer: Abdul Rehman", textSize = 18, textColor = "#E94560", gravity = "center", paddingTop = "16dp", paddingBottom = "8dp", typeface = Typeface.DEFAULT_BOLD },
-        -- How to Use heading
         { TextView, id = "howToHeading", text = "HOW TO USE", textSize = 16, textColor = "#FFFFFF", gravity = "center", paddingBottom = "12dp", typeface = Typeface.DEFAULT_BOLD },
-        -- Scrollable instructions
         { ScrollView, layout_width = "fill", layout_height = "0dp", layout_weight = "1",
             { TextView, id = "instructionsText", text = instructionsText, textSize = 12, textColor = "#CCCCCC", padding = "16dp", typeface = Typeface.MONOSPACE }
         },
-        -- Buttons at bottom
         {
             LinearLayout, orientation = "horizontal", layout_width = "fill", layout_height = "wrap", padding = "16dp",
             { Button, id = "feedbackBtn", text = "SEND FEEDBACK", layout_width = "0dp", layout_weight = "1", textColor = "#FFFFFF", padding = "14dp", layout_marginRight = "8dp", textSize = 14, typeface = Typeface.DEFAULT_BOLD },
@@ -1130,7 +1125,7 @@ function showAboutDialog()
         if mainDialog then mainDialog.dismiss() end
         dlg.dismiss()
         local phone = "+923124255300"
-        local message = "Hello Abdul Rehman! I'm using Gemini Advanced TTS. Here is my feedback:"
+        local message = "Hello Abdul Rehman! I'm using Gemini AudioCraft. Here is my feedback:"
         local url = "https://wa.me/" .. phone:gsub("+", "") .. "?text=" .. Uri.encode(message)
         local intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
@@ -1194,7 +1189,7 @@ function showMain()
         ScrollView, layout_width = "fill", layout_height = "fill", id = "windowBackground",
         {
             LinearLayout, orientation = "vertical", padding = "20dp", layout_width = "fill", layout_height = "wrap",
-            { TextView, text = "Gemini Advanced TTS", textSize = 24, textColor = "#FFFFFF", gravity = "center", paddingTop = "10dp", typeface = Typeface.DEFAULT_BOLD },
+            { TextView, text = "Gemini AudioCraft", textSize = 24, textColor = "#FFFFFF", gravity = "center", paddingTop = "10dp", typeface = Typeface.DEFAULT_BOLD },
             { TextView, text = "Professional AI Voice & Music Generator", textSize = 13, textColor = "#CCCCCC", gravity = "center", paddingBottom = "20dp", typeface = Typeface.create(Typeface.DEFAULT, Typeface.ITALIC) },
             {
                 LinearLayout, orientation = "horizontal", layout_width = "fill", layout_height = "wrap", layout_marginBottom = "15dp",
